@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "October 7 Memorial",
+    "description": "Each new tab remembers one victim from October 7.",
+    "version": "1.0",
+    "chrome_url_overrides": {
+      "newtab": "newtab.html"
+    },
+    "permissions": [
+      "storage"
+    ],
+    "host_permissions": [
+      "https://www.hebcal.com/*"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["victims_with_stories.json"],
+        "matches": ["<all_urls>"]
+      }
+    ]
+  }
+  
