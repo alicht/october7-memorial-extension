@@ -2,110 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>October 7 Memorial</title>
-  <link rel="stylesheet" href="style.css" />
+  <!-- Moment.js for date formatting -->
   <script src="https://unpkg.com/moment@2.29.4/min/moment.min.js"></script>
   <script src="https://unpkg.com/moment@2.29.4/locale/he.js"></script>
-  <style>
-    /* Positioning the top bar */
-    #date-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      padding: 10px 20px;
-    }
-
-    /* Top left: Hebrew + Gregorian Dates */
-    #date-left {
-      display: flex;
-      flex-direction: column;
-      font-size: 14px;
-      color: #555;
-      font-weight: bold;
-    }
-
-    /* Centered red badge for war day */
-    #war-day {
-      background-color: #b10000;
-      color: white;
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 14px;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  </style>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Top Date and War Day Banner -->
-  <div id="date-container">
-    <div id="date-left">
-        <span id="gregorian-date">📆 Loading...</span>
-        <span id="hebrew-date">🕍 Loading...</span>
+  <div class="layout-container">
+    <aside class="sidebar">
+      <div class="sidebar-box">
+        <div class="date-box">
+          <div id="gregorian-date">📆 Loading...</div>
+          <div id="hebrew-date">🕍 Loading...</div>
+        </div>
+        <input type="text" id="search-box" placeholder="Search names..." />
+        <div class="filter-pills">
+          <button class="filter-tag active" data-filter="all">All</button>
+          <button class="filter-tag" data-filter="nova">Nova</button>
+          <button class="filter-tag" data-filter="hostages">Hostages</button>
+          <button class="filter-tag" data-filter="soldiers">Soldiers</button>
+          <button class="filter-tag" data-filter="civilians">Civilians</button>
+          <button class="filter-tag" data-filter="foreign-workers">Foreign Workers</button>
+        </div>
       </div>
-    <div id="war-day">🇮🇱 Israel at War – Day ...</div>
+    </aside>
+
+    <main class="main-content">
+      <!-- "Israel at War" tab moved here -->
+      <div id="war-day">🇮🇱 Israel at War – Day 649</div>
+
+      <!-- New victim-info-box container -->
+      <div class="victim-info-box">
+        <!-- New header section moved here -->
+        <div class="main-header-section">
+          <h1 class="main-header-title">Those we have lost</h1>
+          <p class="main-header-subtitle">Stories of civilians and soldiers killed since Hamas’s onslaught on Israel on October 7, 2023</p>
+        </div>
+
+        <img id="victim-image" src="" alt="Memorial Photo" class="victim-image" />
+        <h2 id="victim-name" class="victim-name">Victim Name</h2>
+        <p id="victim-bio" class="victim-bio">Short bio of the person goes here</p>
+      </div>
+
+      <div class="plaque-content">
+        <div id="victim-story" class="collapsed">
+          <div class="story-content"></div>
+          <a id="expand-button" class="expand-btn" target="_blank">Read Full Story</a>
+        </div>
+      </div>
+    </main>
   </div>
 
-  <!-- Fixed memorial header -->
-  <header class="memorial-header">
-    <div class="header-content">
-      <h1 class="memorial-title">October 7 Memorial Wall</h1>
-      <p class="memorial-subtitle">Remembering every life, every story</p>
-    </div>
-
-    <!-- Floating controls -->
-    <div class="floating-controls">
-      <div class="controls-row">
-        <input type="text" id="search-box" placeholder="Search names..." />
-        <button id="shuffle-button">Random</button>
-      </div>
-      <div class="filter-pills">
-        <button class="filter-tag active" data-filter="all">All</button>
-        <button class="filter-tag" data-filter="supernova">Supernova</button>
-        <button class="filter-tag" data-filter="hostages">Hostages</button>
-        <button class="filter-tag" data-filter="soldiers">Soldiers</button>
-        <button class="filter-tag" data-filter="civilians">Civilians</button>
-        <button class="filter-tag" data-filter="foreign-workers">Foreign Workers</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Timeline-style memorial wall -->
-  <main class="memorial-wall">
-    <div class="memorial-entry">
-      <div class="memorial-plaque">
-        <div class="plaque-header">
-          <img id="victim-image" src="" alt="Memorial Photo" />
-          <div class="plaque-info">
-            <h2 id="victim-name" class="victim-name"></h2>
-            <p id="victim-bio" class="victim-bio"></p>
-          </div>
-        </div>
-
-        <div class="plaque-content">
-          <div id="victim-story" class="collapsed">
-            <div class="story-content"></div>
-            <button id="expand-button" class="expand-btn">Read Full Story</button>
-          </div>
-        </div>
-
-        <div class="plaque-footer">
-          <a id="victim-link" href="" target="_blank" class="memorial-link">
-            Read Original Story
-          </a>
-        </div>
-      </div>
-
-      <div class="memorial-line"></div>
-    </div>
-  </main>
-
-  <!-- Scripts -->
+  <!-- Load victims_data.js FIRST -->
   <script src="victims_data.js"></script>
-  <script src="script.js"></script>
+  <!-- Then load dateBanner.js -->
   <script src="dateBanner.js"></script>
+  <!-- Finally, load script.js -->
+  <script src="script.js"></script>
 </body>
 </html>

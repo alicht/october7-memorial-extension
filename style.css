@@ -1,252 +1,227 @@
+/* style.css content */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
-    color: #2c2c2c;
+    background: white;
+    color: #0033a0;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
     min-height: 100vh;
   }
   
-  /* Memorial header - much smaller */
-  .memorial-header {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    color: white;
-    padding: 20px 0 15px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  }
-  
-  .header-content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  
-  .memorial-title {
-    font-size: 1.8rem;
-    font-weight: 200;
-    margin: 0 0 5px 0;
-    letter-spacing: 0.5px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  }
-  
-  .memorial-subtitle {
-    font-size: 0.95rem;
-    margin: 0 0 20px 0;
-    opacity: 0.9;
-    font-weight: 300;
-  }
-  
-  /* Floating controls - smaller */
-  .floating-controls {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 15px;
-    margin: 15px auto 0;
-    max-width: 600px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .controls-row {
+  .layout-container {
     display: flex;
-    gap: 15px;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
+    gap: 30px;
+    padding: 20px 40px; /* Consistent padding */
+    color: #0033a0; /* Ensured color is applied */
+    background: white;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center content when wrapped */
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%; /* Full width on smaller screens */
+      margin-bottom: 20px; /* Add space below sidebar */
+    }
+  }
+  
+  .sidebar-box {
+    background: #f1f9ff;
+    border: 2px solid #cce0ff;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjusted gap between elements in sidebar-box */
+  }
+  
+  .date-box {
+    margin-bottom: 0; /* Removed space after the date box, relying on parent gap */
+  }
+  
+  .date-box div {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #0033a0;
+    margin-bottom: 5px; /* Consistent space between date lines */
+  }
+  /* Remove margin-bottom from the last div in date-box to prevent extra space */
+  .date-box div:last-child {
+      margin-bottom: 0;
   }
   
   #search-box {
-    padding: 12px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
     font-size: 1rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    border: 2px solid #0033a0;
+    border-radius: 6px;
     outline: none;
-    min-width: 250px;
-    transition: all 0.3s ease;
-    color: #2c2c2c;
-  }
-  
-  #search-box:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-  }
-  
-  #search-box::placeholder {
-    color: #7f8c8d;
-  }
-  
-  #shuffle-button {
-    padding: 12px 24px;
-    font-size: 1rem;
-    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-  }
-  
-  #shuffle-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    color: #0033a0;
   }
   
   .filter-pills {
     display: flex;
-    gap: 8px;
     flex-wrap: wrap;
-    justify-content: center;
+    gap: 10px;
+    justify-content: flex-start;
   }
   
   .filter-tag {
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    background: #f8f9fa;
-    color: #6c757d;
-    border: 1px solid #e0e0e0;
+    padding: 8px 14px;
+    background: white;
+    border: 1px solid #0033a0;
     border-radius: 20px;
+    font-size: 0.9rem;
+    color: #0033a0;
     cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .filter-tag:hover {
-    background: #e9ecef;
-    color: #495057;
+    transition: background 0.2s;
+    white-space: nowrap; /* Prevent tags from breaking words */
   }
   
   .filter-tag.active {
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: #0033a0;
     color: white;
-    border-color: #e74c3c;
-    box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
   }
   
-  /* Memorial wall - main content area */
-  .memorial-wall {
-    max-width: 1000px;
-    margin: 30px auto;
-    padding: 0 20px;
-    position: relative;
-  }
-  
-  .memorial-entry {
-    position: relative;
-    margin-bottom: 60px;
-  }
-  
-  /* Memorial plaque design - much larger */
-  .memorial-plaque {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 
-      0 15px 40px rgba(0, 0, 0, 0.12),
-      0 5px 15px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    border: 1px solid #e8e8e8;
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  
-  .memorial-plaque:hover {
-    transform: translateY(-5px);
-    box-shadow: 
-      0 20px 50px rgba(0, 0, 0, 0.18),
-      0 8px 20px rgba(0, 0, 0, 0.12);
-  }
-  
-  .memorial-plaque::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #3498db 100%);
-  }
-  
-  /* Plaque header - much larger */
-  .plaque-header {
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    max-width: 700px;
+    margin: 0 auto; /* Center horizontally */
     display: flex;
-    align-items: flex-start;
-    padding: 50px;
-    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-    border-bottom: 1px solid #e8e8e8;
+    flex-direction: column;
+    align-items: center; /* Center items vertically within main-content */
+    text-align: center;
+    padding-top: 0; /* Removed padding-top to align with sidebar */
+  }
+  @media (max-width: 768px) {
+    .main-content {
+      max-width: 100%; /* Full width on smaller screens */
+      padding: 0 20px; /* Add horizontal padding */
+    }
   }
   
-  #victim-image {
-    width: 200px;
-    height: 200px;
+  /* New header section styling */
+  .main-header-section {
+    text-align: center;
+    margin-top: 0; /* No top margin as it's inside victim-info-box now */
+    margin-bottom: 15px; /* Space below the header, inside the victim-info-box */
+    padding: 0; /* No padding, let victim-info-box handle it */
+    width: 100%;
+    background: none; /* Removed background */
+    border: none; /* Removed border */
+    border-radius: 0; /* Removed border-radius */
+    box-sizing: border-box; /* Include padding in width calculation */
+  }
+  
+  .main-header-title {
+    font-size: 1.5rem; /* Further reduced font size for better fit */
+    font-weight: 700;
+    color: #0033a0;
+    margin-bottom: 3px; /* Reduced margin */
+    line-height: 1.1; /* Tighter line spacing for the title */
+  }
+  
+  .main-header-subtitle {
+    font-size: 0.8rem; /* Further reduced font size */
+    color: #555;
+    margin-top: 0;
+    line-height: 1.3; /* Line spacing for the subtitle */
+  }
+  
+  
+  #war-day {
+    background-color: #0033a0 !important; /* Use important to override inline style */
+    color: white !important; /* Use important to override inline style */
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin: 0 auto 20px auto; /* Center and add more bottom margin for separation */
+    display: block;
+    width: fit-content; /* Ensure it fits content */
+    position: static !important; /* Override any absolute positioning */
+    box-shadow: none !important; /* Remove any shadow */
+    font-size: 1.1rem; /* Adjusted font size for consistency */
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* New container for victim info */
+  .victim-info-box {
+    background: #f8f8f8; /* Light grey shade */
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px; /* Consistent padding all around */
+    max-width: 650px; /* Consistent max-width with plaque-content */
+    margin: 0 auto 20px auto; /* Center horizontally, add bottom margin */
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: 100%; /* Ensure it takes full width of its container */
+    box-sizing: border-box; /* Include padding in width */
+  }
+  
+  .victim-image {
+    width: 300px;
+    height: 300px;
     object-fit: cover;
     border-radius: 12px;
-    margin-right: 40px;
+    border: 5px solid #0033a0;
+    margin: 0 auto 15px auto; /* Center and adjusted bottom margin for consistency */
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    flex-shrink: 0;
-    border: 4px solid white;
-  }
-  
-  .plaque-info {
-    flex: 1;
-    min-width: 0;
   }
   
   .victim-name {
-    font-size: 2.8rem;
-    font-weight: 300;
-    color: #2c3e50;
-    margin: 0 0 20px 0;
-    line-height: 1.1;
-    letter-spacing: -0.5px;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-top: 5px;
+    margin-bottom: 5px; /* Adjusted margin for consistency */
+    text-align: center;
+    color: #0033a0;
+    line-height: 1.2; /* Adjusted line height */
   }
   
   .victim-bio {
-    font-size: 1.3rem;
-    color: #7f8c8d;
-    margin: 0;
-    line-height: 1.4;
-    font-style: italic;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 0px; /* Rely on parent padding */
+    margin-top: 0px; /* Rely on parent padding */
+    line-height: 1.2; /* Applied same line height for consistency */
   }
   
-  /* Plaque content - larger */
   .plaque-content {
-    padding: 50px;
+    padding: 20px;
+    background: #fdfdf5;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    max-width: 650px; /* Consistent max-width with victim-info-box */
+    margin: 0 auto 20px auto; /* Center horizontally, added bottom margin for consistency */
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: 100%; /* Ensure it takes full width of its container */
+    box-sizing: border-box; /* Include padding in width */
   }
   
   #victim-story {
     font-size: 1.1rem;
-    line-height: 1.8;
-    color: #444;
-    margin: 0;
-  }
-  
-  #victim-story.collapsed .story-content .first-paragraph {
-    display: block;
-  }
-  
-  #victim-story.collapsed .story-content .remaining-paragraphs {
-    display: none;
-  }
-  
-  #victim-story.expanded .story-content .first-paragraph,
-  #victim-story.expanded .story-content .remaining-paragraphs {
-    display: block;
+    line-height: 1.75;
+    color: #333;
   }
   
   .story-content p {
-    margin-bottom: 22px;
-    text-align: left;
+    margin-bottom: 14px;
   }
   
   .story-content p:first-of-type {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 10px;
     color: #2c3e50;
-    font-weight: 400;
-    margin-bottom: 25px;
   }
   
   .expand-btn {
@@ -258,8 +233,11 @@ body {
     cursor: pointer;
     font-size: 1rem;
     font-weight: 500;
-    margin-top: 25px;
+    margin-top: 20px;
     transition: all 0.3s ease;
+    display: inline-block; /* Ensure it's treated as a block for margin auto */
+    text-decoration: none; /* Remove underline for links */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
   }
   
   .expand-btn:hover {
@@ -267,135 +245,41 @@ body {
     box-shadow: 0 6px 20px rgba(127, 140, 141, 0.3);
   }
   
-  #victim-story.expanded .expand-btn {
-    display: none;
-  }
-  
-  /* Plaque footer - larger */
-  .plaque-footer {
-    padding: 30px 50px;
-    background: #fafafa;
-    border-top: 1px solid #e8e8e8;
-    text-align: center;
-  }
-  
-  .memorial-link {
-    color: #3498db;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1.05rem;
-    transition: all 0.3s ease;
-  }
-  
-  .memorial-link:hover {
-    color: #2980b9;
-    text-decoration: underline;
-  }
-  
-  /* Memorial connection line */
-  .memorial-line {
-    position: absolute;
-    left: 50%;
-    bottom: -30px;
-    width: 2px;
-    height: 30px;
-    background: linear-gradient(180deg, #bdc3c7 0%, transparent 100%);
-    transform: translateX(-50%);
-  }
-  
-  .memorial-entry:last-child .memorial-line {
-    display: none;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .memorial-title {
-      font-size: 2rem;
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .layout-container {
+      padding: 15px;
+      gap: 20px;
     }
-    
-    .floating-controls {
-      margin: 15px 20px 0;
+    .sidebar-box {
       padding: 15px;
     }
-    
-    .controls-row {
-      flex-direction: column;
-      gap: 10px;
+    .filter-tag {
+      font-size: 0.85rem;
+      padding: 6px 10px;
     }
-    
-    #search-box {
-      min-width: auto;
-      width: 100%;
+    .victim-image {
+      width: 250px; /* Adjusted for smaller screens */
+      height: 250px; /* Adjusted for smaller screens */
     }
-    
-    .memorial-wall {
-      padding: 0 15px;
-    }
-    
-    .plaque-header {
-      flex-direction: column;
-      text-align: center;
-      padding: 25px 20px;
-    }
-    
-    #victim-image {
-      margin-right: 0;
-      margin-bottom: 20px;
-      width: 100px;
-      height: 100px;
-    }
-    
     .victim-name {
-      font-size: 1.5rem;
+      font-size: 1.6rem; /* Adjusted for smaller screens */
     }
-    
-    .plaque-content {
-      padding: 25px 20px;
+    .victim-bio {
+      font-size: 0.95rem; /* Adjusted for smaller screens */
     }
-    
-    .plaque-footer {
-      padding: 15px 20px;
+    .plaque-content, .victim-info-box { /* Apply to both boxes */
+      padding: 15px;
     }
-  }
-  .date-banner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #ccc;
-    padding: 6px 16px;
-    font-size: 0.95rem;
-    font-family: 'Noto Sans Hebrew', sans-serif;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  .left-date {
-    color: #333;
-    font-weight: 500;
-    direction: rtl; /* Ensures Hebrew reads right-to-left */
-  }
-  
-  .center-banner {
-    text-align: center;
-    font-weight: bold;
-    color: #d32f2f;
-    font-size: 1rem;
-  }
-  
-  #war-day {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #b30000;
-    color: white;
-    font-weight: bold;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    z-index: 1000;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    #victim-story {
+      font-size: 1rem;
+    }
+    .story-content p:first-of-type {
+      font-size: 1.1rem;
+    }
+    .expand-btn {
+      padding: 12px 25px;
+      font-size: 0.9rem;
+    }
   }
   
