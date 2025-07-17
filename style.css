@@ -11,22 +11,22 @@ body {
   .layout-container {
     display: flex;
     gap: 30px;
-    padding: 20px 40px; /* Consistent padding */
-    color: #0033a0; /* Ensured color is applied */
+    padding: 20px 40px;
+    color: #0033a0;
     background: white;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: center; /* Center content when wrapped */
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   /* Sidebar */
   .sidebar {
     width: 280px;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
   }
   @media (max-width: 768px) {
     .sidebar {
-      width: 100%; /* Full width on smaller screens */
-      margin-bottom: 20px; /* Add space below sidebar */
+      width: 100%;
+      margin-bottom: 20px;
     }
   }
   
@@ -37,22 +37,20 @@ body {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Adjusted gap between elements in sidebar-box */
+    gap: 10px;
   }
   
   .date-box {
-    margin-bottom: 0; /* Removed space after the date box, relying on parent gap */
+    margin-bottom: 0;
   }
-  
   .date-box div {
     font-size: 1rem;
     font-weight: bold;
     color: #0033a0;
-    margin-bottom: 5px; /* Consistent space between date lines */
+    margin-bottom: 5px;
   }
-  /* Remove margin-bottom from the last div in date-box to prevent extra space */
   .date-box div:last-child {
-      margin-bottom: 0;
+    margin-bottom: 0;
   }
   
   #search-box {
@@ -82,9 +80,8 @@ body {
     color: #0033a0;
     cursor: pointer;
     transition: background 0.2s;
-    white-space: nowrap; /* Prevent tags from breaking words */
+    white-space: nowrap;
   }
-  
   .filter-tag.active {
     background: #0033a0;
     color: white;
@@ -94,117 +91,116 @@ body {
   .main-content {
     flex: 1;
     max-width: 700px;
-    margin: 0 auto; /* Center horizontally */
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center items vertically within main-content */
+    align-items: center;
     text-align: center;
-    padding-top: 0; /* Removed padding-top to align with sidebar */
+    padding-top: 0;
   }
   @media (max-width: 768px) {
     .main-content {
-      max-width: 100%; /* Full width on smaller screens */
-      padding: 0 20px; /* Add horizontal padding */
+      max-width: 100%;
+      padding: 0 20px;
     }
   }
   
-  /* New header section styling */
+  /* Header Section */
   .main-header-section {
     text-align: center;
-    margin-top: 0; /* No top margin as it's inside victim-info-box now */
-    margin-bottom: 15px; /* Space below the header, inside the victim-info-box */
-    padding: 0; /* No padding, let victim-info-box handle it */
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding: 0;
     width: 100%;
-    background: none; /* Removed background */
-    border: none; /* Removed border */
-    border-radius: 0; /* Removed border-radius */
-    box-sizing: border-box; /* Include padding in width calculation */
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-sizing: border-box;
   }
-  
   .main-header-title {
-    font-size: 1.5rem; /* Further reduced font size for better fit */
+    font-size: 1.8rem;
     font-weight: 700;
     color: #0033a0;
-    margin-bottom: 3px; /* Reduced margin */
-    line-height: 1.1; /* Tighter line spacing for the title */
+    margin-bottom: 10px;
+    line-height: 1.2;
   }
-  
   .main-header-subtitle {
-    font-size: 0.8rem; /* Further reduced font size */
+    font-size: 1.1rem;
     color: #555;
     margin-top: 0;
-    line-height: 1.3; /* Line spacing for the subtitle */
+    line-height: 1.4;
   }
   
-  
+  /* Israel at War Day */
   #war-day {
-    background-color: #0033a0 !important; /* Use important to override inline style */
-    color: white !important; /* Use important to override inline style */
+    background-color: #0033a0 !important;
+    color: white !important;
     padding: 10px 16px;
     border-radius: 8px;
-    margin: 0 auto 20px auto; /* Center and add more bottom margin for separation */
+    margin: 0 0 10px 0;
     display: block;
-    width: fit-content; /* Ensure it fits content */
-    position: static !important; /* Override any absolute positioning */
-    box-shadow: none !important; /* Remove any shadow */
-    font-size: 1.1rem; /* Adjusted font size for consistency */
+    width: 100%;
+    position: static !important;
+    box-shadow: none !important;
+    font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
+    box-sizing: border-box;
   }
   
-  /* New container for victim info */
+  /* Victim Info Box */
   .victim-info-box {
-    background: #f8f8f8; /* Light grey shade */
+    background: #f8f8f8;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
-    padding: 20px; /* Consistent padding all around */
-    max-width: 650px; /* Consistent max-width with plaque-content */
-    margin: 0 auto 20px auto; /* Center horizontally, add bottom margin */
+    padding: 24px;
+    max-width: 650px;
+    margin: 0 auto 20px auto;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    width: 100%; /* Ensure it takes full width of its container */
-    box-sizing: border-box; /* Include padding in width */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    width: 100%;
   }
   
+  /* Victim photo with drop shadow */
   .victim-image {
     width: 300px;
     height: 300px;
     object-fit: cover;
     border-radius: 12px;
     border: 5px solid #0033a0;
-    margin: 0 auto 15px auto; /* Center and adjusted bottom margin for consistency */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    margin: 0 auto 15px auto;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
   }
   
+  /* Victim name and bio */
   .victim-name {
     font-size: 1.8rem;
-    font-weight: 600;
-    margin-top: 5px;
-    margin-bottom: 5px; /* Adjusted margin for consistency */
-    text-align: center;
+    font-weight: 700;
     color: #0033a0;
-    line-height: 1.2; /* Adjusted line height */
+    margin: 0 0 10px 0;
+    line-height: 1.2;
+    text-align: center;
   }
-  
   .victim-bio {
     font-size: 1.1rem;
-    color: #666;
-    margin-bottom: 0px; /* Rely on parent padding */
-    margin-top: 0px; /* Rely on parent padding */
-    line-height: 1.2; /* Applied same line height for consistency */
+    color: #555;
+    margin: 0 0 15px 0;
+    line-height: 1.4;
   }
   
+  /* Story Section */
   .plaque-content {
     padding: 20px;
     background: #fdfdf5;
     border-radius: 12px;
     border: 1px solid #e0e0e0;
-    max-width: 650px; /* Consistent max-width with victim-info-box */
-    margin: 0 auto 20px auto; /* Center horizontally, added bottom margin for consistency */
+    max-width: 650px;
+    margin: 0 auto 20px auto;
     text-align: left;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    width: 100%; /* Ensure it takes full width of its container */
-    box-sizing: border-box; /* Include padding in width */
+    width: 100%;
+    box-sizing: border-box;
   }
   
   #victim-story {
@@ -213,17 +209,27 @@ body {
     color: #333;
   }
   
+  .story-content {
+    display: block;
+  }
+  
   .story-content p {
-    margin-bottom: 14px;
+    margin-top: 0 !important;
+    margin-bottom: 2em !important;
+    padding: 0 !important;
+    line-height: 1.6 !important;
+    font-size: 1.05rem !important;
+    color: #333 !important;
   }
   
   .story-content p:first-of-type {
     font-size: 1.25rem;
     font-weight: 500;
-    margin-bottom: 10px;
     color: #2c3e50;
+    margin-bottom: 2em !important;
   }
   
+  /* CTA button */
   .expand-btn {
     background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
     color: white;
@@ -235,17 +241,16 @@ body {
     font-weight: 500;
     margin-top: 20px;
     transition: all 0.3s ease;
-    display: inline-block; /* Ensure it's treated as a block for margin auto */
-    text-decoration: none; /* Remove underline for links */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+    display: inline-block;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
-  
   .expand-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(127, 140, 141, 0.3);
   }
   
-  /* Responsive adjustments */
+  /* Responsive */
   @media (max-width: 480px) {
     .layout-container {
       padding: 15px;
@@ -259,27 +264,56 @@ body {
       padding: 6px 10px;
     }
     .victim-image {
-      width: 250px; /* Adjusted for smaller screens */
-      height: 250px; /* Adjusted for smaller screens */
+      width: 250px;
+      height: 250px;
     }
     .victim-name {
-      font-size: 1.6rem; /* Adjusted for smaller screens */
+      font-size: 1.6rem;
     }
     .victim-bio {
-      font-size: 0.95rem; /* Adjusted for smaller screens */
+      font-size: 0.95rem;
     }
-    .plaque-content, .victim-info-box { /* Apply to both boxes */
+    .plaque-content,
+    .victim-info-box {
       padding: 15px;
     }
     #victim-story {
       font-size: 1rem;
     }
-    .story-content p:first-of-type {
-      font-size: 1.1rem;
+    .story-content p {
+      margin-bottom: 1em;
+      line-height: 1.6;
     }
     .expand-btn {
       padding: 12px 25px;
       font-size: 0.9rem;
     }
+    #war-day {
+      width: 100%;
+    }
+   /* OVERRIDE: Force paragraph spacing and line breaks in victim story */
+#victim-story .story-content {
+  white-space: normal !important;
+}
+
+#victim-story .story-content p {
+  display: block !important;
+  margin-bottom: 1.5em !important;
+  line-height: 1.6 !important;
+  white-space: pre-wrap !important;
+}
+.story-content p {
+    margin-bottom: 1.5em;
+    line-height: 1.6;
+  }
+  .story-content p {
+    margin-bottom: 1.5em;
+    line-height: 1.6;
+    font-size: 1.05rem;
+    color: #333;
+  }
+  
+      
+      
   }
   

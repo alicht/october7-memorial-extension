@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>October 7 Memorial</title>
-  <!-- Moment.js for date formatting -->
+
+  <title>Remembering the Victims of October 7</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2285%22>🎗️</text></svg>">
+
   <script src="https://unpkg.com/moment@2.29.4/min/moment.min.js"></script>
   <script src="https://unpkg.com/moment@2.29.4/locale/he.js"></script>
-  <!-- Link to external stylesheet -->
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -31,12 +34,9 @@
     </aside>
 
     <main class="main-content">
-      <!-- "Israel at War" tab moved here -->
       <div id="war-day">🇮🇱 Israel at War – Day 649</div>
 
-      <!-- New victim-info-box container -->
       <div class="victim-info-box">
-        <!-- New header section moved here -->
         <div class="main-header-section">
           <h1 class="main-header-title">Those we have lost</h1>
           <p class="main-header-subtitle">Stories of civilians and soldiers killed since Hamas’s onslaught on Israel on October 7, 2023</p>
@@ -50,17 +50,14 @@
       <div class="plaque-content">
         <div id="victim-story" class="collapsed">
           <div class="story-content"></div>
-          <a id="expand-button" class="expand-btn" target="_blank">Read Full Story</a>
+          <a id="expand-button" class="expand-btn" target="_blank">Read on Times of Israel</a>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- Load victims_data.js FIRST -->
   <script src="victims_data.js"></script>
-  <!-- Then load dateBanner.js -->
-  <script src="dateBanner.js"></script>
-  <!-- Finally, load script.js -->
   <script src="script.js"></script>
+  <script src="dateBanner.js"></script>
 </body>
 </html>

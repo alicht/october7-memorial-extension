@@ -5,8 +5,7 @@ let currentSearchTerm = '';
 
 /**
  * Adds tags to each victim based on keywords found in their bio, story, or name.
- * @param {Array<Object>} victims - The array of victim objects to tag.
- * @returns {Array<Object>} The array of victim objects with added 'tags' property.
+ * @param {Array<Object>} victims - The array of victim objects with added 'tags' property.
  */
 function tagVictims(victims) {
   return victims.map(victim => {
@@ -77,6 +76,8 @@ function loadRandomVictim() {
 }
 
 function loadSpecificVictim(victim) {
+  console.log("🧠 Selected victim object:", victim);
+
   document.getElementById("victim-image").src = victim.image;
   document.getElementById("victim-image").alt = victim.name;
   document.getElementById("victim-name").textContent = `${victim.name}, ${victim.age}`;
@@ -86,37 +87,55 @@ function loadSpecificVictim(victim) {
   const storyContent = storyContainer.querySelector('.story-content');
 
   if (victim.story && storyContent) {
+    console.log("🟢 Story found, rendering...");
     storyContent.innerHTML = '';
-    const rawParagraphs = victim.story.split(/\\n{2,}/).filter(p => p.trim());
 
-    if (rawParagraphs.length > 0) {
-      const firstParagraphDiv = document.createElement("div");
-      firstParagraphDiv.className = "first-paragraph";
-      const firstPara = document.createElement("p");
-      firstPara.innerHTML = rawParagraphs[0].trim().replace(/\\n/g, '<br>');
-      firstParagraphDiv.appendChild(firstPara);
-      storyContent.appendChild(firstParagraphDiv);
+    let cleanStory = victim.story
+      .replace(/\\n/g, '\n')
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .replace(/([A-Za-z])\.\s*\n\s*([A-Za-z])/g, '$1. $2')  // Fix "Sgt.\nDavid"
+      .replace(/([a-z])\n([A-Z])/g, '$1 $2');                // Fix lowercase line break
 
-      if (rawParagraphs.length > 1) {
-        const remainingParagraphsDiv = document.createElement("div");
-        remainingParagraphsDiv.className = "remaining-paragraphs";
+    const footerTriggers = [
+      "If so, we have a request.",
+      "We're really pleased that you've read",
+      "Please consider joining our reader support group",
+      "Your support is essential",
+      "© 2025 The Times Of Israel",
+      "Today's Daily Briefing",
+      "Those We Have Lost",
+      "Wartime Diaries",
+      "Those We Are Missing"
+    ];
 
-        rawParagraphs.slice(1).forEach(p => {
-          const paraEl = document.createElement("p");
-          paraEl.innerHTML = p.trim().replace(/\\n/g, '<br>');
-          remainingParagraphsDiv.appendChild(paraEl);
-        });
-
-        storyContent.appendChild(remainingParagraphsDiv);
+    for (const trigger of footerTriggers) {
+      if (cleanStory.includes(trigger)) {
+        cleanStory = cleanStory.split(trigger)[0];
+        break;
       }
     }
+
+    const paragraphs = cleanStory
+      .split(/\n\s*\n|(?<=\.)\n+/)  // double newline or newline after sentence
+      .map(p => p.trim())
+      .filter(p => p.length > 0);
+
+    paragraphs.forEach(paragraph => {
+      const p = document.createElement("p");
+      p.textContent = paragraph;
+      storyContent.appendChild(p);
+    });
+  } else {
+    console.warn("⚠️ No story found or storyContent is null.");
   }
 
-  document.getElementById("expand-button").href = victim.url;
+  const expandBtn = document.getElementById("expand-button");
+  expandBtn.href = victim.url;
+  expandBtn.textContent = "Read more on Times of Israel";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Sync global victims_data if it was defined in victims_data.js
   if (typeof window.victims_data !== 'undefined') {
     victims_data = window.victims_data;
   }
