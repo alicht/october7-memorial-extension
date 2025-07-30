@@ -21,7 +21,10 @@
           <div id="gregorian-date">📆 Loading...</div>
           <div id="hebrew-date">🕍 Loading...</div>
         </div>
-        <input type="text" id="search-box" placeholder="Search names..." />
+        <div class="search-container">
+          <input type="text" id="search-box" placeholder="Search names..." autocomplete="off" />
+          <div id="search-suggestions" class="search-suggestions hidden"></div>
+        </div>
         <div class="filter-pills">
           <button class="filter-tag active" data-filter="all">All</button>
           <button class="filter-tag" data-filter="nova">Nova</button>
