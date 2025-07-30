@@ -6,6 +6,9 @@ let searchTimeout = null;
 let selectedSuggestionIndex = -1;
 let isSearchMode = false;
 
+// SAFE_MODE guard - can be disabled with window.__SEARCH_SAFE_MODE__ = false
+window.__SEARCH_SAFE_MODE__ = window.__SEARCH_SAFE_MODE__ !== false;
+
 /**
  * Adds tags to each victim based on keywords found in their bio, story, or name.
  * @param {Array<Object>} victims - The array of victim objects with added 'tags' property.
@@ -42,19 +45,31 @@ function getFilteredVictims() {
 
   let filtered = victims_data;
 
+  // Apply tag filter only - search is handled separately
   if (currentFilter !== 'all') {
     filtered = filtered.filter(victim => victim.tags.includes(currentFilter));
   }
 
-  if (currentSearchTerm) {
-    filtered = filtered.filter(victim =>
-      victim.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-      victim.bio.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-      victim.story.toLowerCase().includes(currentSearchTerm.toLowerCase())
-    );
+  return filtered;
+}
+
+/**
+ * Gets the base dataset for search (filtered by tag, but not by search term)
+ * @returns {Array} Filtered victim array for search operations
+ */
+function getSearchableVictims() {
+  if (victims_data.length === 0) {
+    return [];
   }
 
-  return filtered;
+  let searchable = victims_data;
+
+  // Apply active tag filter
+  if (currentFilter !== 'all') {
+    searchable = searchable.filter(victim => victim.tags.includes(currentFilter));
+  }
+
+  return searchable;
 }
 
 // ✅ Clean up TOI footer junk
@@ -126,7 +141,10 @@ function searchVictims(query, limit = 10) {
   const normalizedQuery = normalizeText(query);
   const results = [];
   
-  victims_data.forEach(victim => {
+  // FIXED: Search within tag-filtered results, not raw victims_data
+  const searchableVictims = getSearchableVictims();
+  
+  searchableVictims.forEach(victim => {
     const normalizedName = normalizeText(victim.name);
     
     // Exact match gets highest score
@@ -302,36 +320,167 @@ function resetToDefaultState() {
   isSearchMode = false;
   currentSearchTerm = '';
   hideSuggestions();
+  hideEmptyState(); // Hide empty state when resetting
   
+  // CRITICAL: Never show global error on reset - this is just a UI state change
   try {
+    // Check if data is available at all
+    if (!victims_data || victims_data.length === 0) {
+      console.warn("⚠️ No victim data available during reset");
+      showNoResults("No victim data available. Please refresh the page.");
+      return;
+    }
+    
     const filteredVictims = getFilteredVictims();
     
     if (filteredVictims.length === 0) {
-      document.getElementById("victim-name").textContent = "No victims found";
-      document.getElementById("victim-bio").textContent = "No victims found for this filter";
-      document.getElementById("victim-story").innerHTML = "";
-      document.getElementById("victim-image").src = "";
+      // This is just a filter result - not a system error
+      showNoResults("No victims found for this filter");
       return;
     }
     
     const randomVictim = filteredVictims[Math.floor(Math.random() * filteredVictims.length)];
     loadSpecificVictim(randomVictim);
   } catch (err) {
-    console.error("🚨 Error in reset:", err);
-    // Don't replace entire body - just show local error
-    showLocalError("Unable to load victim data. Please refresh the page.");
+    console.error("🚨 Error in reset (non-critical):", err);
+    // This is a UI operation failure, not data loading failure
+    showNoResults("Unable to display victim. Please try again.");
   }
 }
 
 /**
- * Shows a local error message without destroying the UI
+ * Shows a global error banner for critical data loading failures only
  * @param {string} message - Error message to display
  */
-function showLocalError(message) {
-  document.getElementById("victim-name").textContent = "Error";
+function showGlobalError(message) {
+  document.getElementById("victim-name").textContent = "System Error";
   document.getElementById("victim-bio").textContent = message;
   document.getElementById("victim-story").innerHTML = "";
   document.getElementById("victim-image").src = "";
+  console.error("🚨 Global Error:", message);
+}
+
+/**
+ * Shows local empty state for search with no results
+ * @param {string} query - Search query that returned no results
+ */
+function handleNoResults(query) {
+  const activeFilterLabel = getActiveFilterLabel();
+  const emptyStateEl = document.getElementById('empty-state');
+  
+  if (!emptyStateEl) {
+    console.warn('Empty state element not found');
+    return;
+  }
+  
+  const filterInfo = activeFilterLabel && activeFilterLabel !== 'All' 
+    ? `<div class="empty-filter-info">Searched within: ${escapeHtml(activeFilterLabel)}</div>`
+    : '';
+  
+  emptyStateEl.innerHTML = `
+    <div class="empty-title">No matches found</div>
+    <div class="empty-subtitle">No matches for "${escapeHtml(query)}".</div>
+    ${filterInfo}
+    <div class="empty-actions">
+      <button id="btn-clear-search" class="action-btn" type="button">Clear search</button>
+      <button id="btn-surprise" class="action-btn secondary" type="button">Another story</button>
+    </div>
+  `;
+  
+  emptyStateEl.hidden = false;
+  wireEmptyStateActions();
+  
+  // Hide suggestions dropdown
+  hideSuggestions();
+}
+
+/**
+ * Hides the empty state component
+ */
+function hideEmptyState() {
+  const emptyStateEl = document.getElementById('empty-state');
+  if (emptyStateEl) {
+    emptyStateEl.hidden = true;
+  }
+}
+
+/**
+ * Gets the current active filter label for display
+ * @returns {string} Filter label
+ */
+function getActiveFilterLabel() {
+  const filterMap = {
+    'all': 'All',
+    'nova': 'Nova Festival',
+    'hostages': 'Hostages',
+    'soldiers': 'Soldiers',
+    'civilians': 'Civilians',
+    'foreign-workers': 'Foreign Workers'
+  };
+  return filterMap[currentFilter] || 'All';
+}
+
+/**
+ * Escapes HTML to prevent XSS
+ * @param {string} str - String to escape
+ * @returns {string} Escaped string
+ */
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/**
+ * Wires up empty state action buttons
+ */
+function wireEmptyStateActions() {
+  const clearBtn = document.getElementById('btn-clear-search');
+  const surpriseBtn = document.getElementById('btn-surprise');
+  
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      clearSearchInput();
+      hideEmptyState();
+      resetToDefaultState();
+    });
+  }
+  
+  if (surpriseBtn) {
+    surpriseBtn.addEventListener('click', () => {
+      hideEmptyState();
+      loadRandomVictim();
+    });
+  }
+}
+
+/**
+ * Clears the search input field
+ */
+function clearSearchInput() {
+  const searchBox = document.getElementById('search-box');
+  if (searchBox) {
+    searchBox.value = '';
+    currentSearchTerm = '';
+  }
+}
+
+/**
+ * Shows victim pill (restores visibility) - DEPRECATED: No longer hiding pill
+ */
+function showVictimPill() {
+  // No longer needed - we don't hide the victim pill
+}
+
+/**
+ * Legacy showNoResults for backwards compatibility - now uses handleNoResults
+ * @param {string} message - Message to display
+ */
+function showNoResults(message) {
+  // Extract query from message if possible
+  const queryMatch = message.match(/No results for ['"](.+?)['"]\.?/);
+  const query = queryMatch ? queryMatch[1] : 'your search';
+  handleNoResults(query);
 }
 
 function loadRandomVictim() {
@@ -342,22 +491,24 @@ function loadRandomVictim() {
       loadSpecificVictim(suggestions[0]);
       return;
     }
-    // Show no results for search
-    document.getElementById("victim-name").textContent = "No results found";
-    document.getElementById("victim-bio").textContent = `No results for "${currentSearchTerm}"`;
-    document.getElementById("victim-story").innerHTML = "";
-    document.getElementById("victim-image").src = "";
+    // Show empty state for search with no results
+    handleNoResults(currentSearchTerm);
     return;
   }
   
   try {
+    // Check data availability first
+    if (!victims_data || victims_data.length === 0) {
+      console.warn("⚠️ No victim data available");
+      showGlobalError("Unable to load victim data. Please refresh the page.");
+      return;
+    }
+    
     const filteredVictims = getFilteredVictims();
 
     if (filteredVictims.length === 0) {
-      document.getElementById("victim-name").textContent = "No victims found";
-      document.getElementById("victim-bio").textContent = "No victims found for this filter";
-      document.getElementById("victim-story").innerHTML = "";
-      document.getElementById("victim-image").src = "";
+      // This is a filter result, not a data loading error
+      showNoResults("No victims found for this filter");
       return;
     }
 
@@ -365,12 +516,20 @@ function loadRandomVictim() {
     loadSpecificVictim(randomVictim);
   } catch (err) {
     console.error("🚨 Error loading victim:", err);
-    showLocalError("Unable to load victim data. Please refresh the page.");
+    // Only show global error if it's truly a data loading issue
+    if (!victims_data || victims_data.length === 0) {
+      showGlobalError("Unable to load victim data. Please refresh the page.");
+    } else {
+      showNoResults("Unable to display victim. Please try again.");
+    }
   }
 }
 
 function loadSpecificVictim(victim) {
   console.log("🧠 Selected victim object:", victim);
+  
+  // Hide empty state when loading a specific victim
+  hideEmptyState();
 
   document.getElementById("victim-image").src = victim.image;
   document.getElementById("victim-image").alt = victim.name;
@@ -427,6 +586,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   victims_data = tagVictims(victims_data);
   loadRandomVictim();
+  
+  // Debug instrumentation for development
+  window._dbg = {
+    sample(n = 5) { 
+      return victims_data.slice(0, n).map(v => v.name); 
+    },
+    dataCount() { 
+      return victims_data?.length || 0; 
+    },
+    visibleCount() { 
+      return getSearchableVictims()?.length || 0; 
+    },
+    search(q) { 
+      return searchVictims(q, 10).map(v => v.name); 
+    },
+    currentState() {
+      return {
+        filter: currentFilter,
+        searchTerm: currentSearchTerm,
+        isSearchMode: isSearchMode,
+        dataCount: victims_data?.length || 0,
+        visibleCount: getSearchableVictims()?.length || 0,
+        emptyStateVisible: !document.getElementById('empty-state')?.hidden
+      };
+    },
+    testEmptyState(query = 'nonexistentname') {
+      handleNoResults(query);
+    },
+    hideEmptyState() {
+      hideEmptyState();
+    }
+  };
 
   document.querySelectorAll('.filter-tag').forEach(button => {
     button.addEventListener('click', () => {
@@ -450,32 +641,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const query = e.target.value;
     currentSearchTerm = query;
     
-    // Clear previous timeout
+    // Clear previous timeout to prevent race conditions
     if (searchTimeout) {
       clearTimeout(searchTimeout);
+      searchTimeout = null;
     }
     
-    // If empty, reset to default state
+    // If empty, reset to default state - NEVER trigger global error
     if (!query.trim()) {
       resetToDefaultState();
       return;
     }
     
-    // Debounce search
+    // Use safe mode or fallback to legacy behavior
+    if (!window.__SEARCH_SAFE_MODE__) {
+      // Legacy path - just filter without suggestions
+      loadRandomVictim();
+      return;
+    }
+    
+    // Debounce search with safe error handling
     searchTimeout = setTimeout(() => {
-      isSearchMode = true;
-      const suggestions = searchVictims(query);
-      displaySuggestions(suggestions, query);
-      
-      // Show first result in main area
-      if (suggestions.length > 0) {
-        loadSpecificVictim(suggestions[0]);
-      } else {
-        // Show no results
-        document.getElementById("victim-name").textContent = "No results found";
-        document.getElementById("victim-bio").textContent = `No results for "${query}"`;
-        document.getElementById("victim-story").innerHTML = "";
-        document.getElementById("victim-image").src = "";
+      try {
+        isSearchMode = true;
+        const suggestions = searchVictims(query);
+        displaySuggestions(suggestions, query);
+        
+        // Show first result in main area
+        if (suggestions.length > 0) {
+          loadSpecificVictim(suggestions[0]);
+        } else {
+          // Show empty state for no results
+          handleNoResults(query);
+        }
+      } catch (err) {
+        console.error("🚨 Search error (non-critical):", err);
+        showNoResults(`Search failed for "${query}". Please try again.`);
       }
     }, 200);
   });
